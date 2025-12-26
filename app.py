@@ -243,6 +243,28 @@ def api_logout():
     logout_user()
     return jsonify({'status': 'ok'})
 
+# Валидация адреса
+def validate_address(city, street, house, apartment):
+    errors = []
+
+    # Город: только буквы, пробелы, дефисы, апострофы
+    if not city or not re.match(r"^[a-zA-Zа-яА-ЯёЁ\s\-']+$", city):
+        errors.append("Город должен содержать только буквы, пробелы, дефисы или апострофы.")
+    
+    # Улица: буквы, цифры, пробелы, дефисы, точки
+    if not street or not re.match(r"^[a-zA-Zа-яА-ЯёЁ0-9\s\-.'/#]+$", street):
+        errors.append("Улица может содержать буквы, цифры, пробелы, дефисы, точки, # и /.")
+
+    # Дом: цифры, слэш, дефис, буквы в конце (например: 33, 33/1, 12-А)
+    if not house or not re.match(r"^\d+[/\-]?\d*[А-Яа-яA-Za-z]?$", house):
+        errors.append("Номер дома должен быть числом (например: 33, 33/1, 12-А).")
+
+    # Квартира: цифры, слэш, дефис (опционально)
+    if apartment and not re.match(r"^\d+[/\-]?\d*$", apartment):
+        errors.append("Номер квартиры должен быть числом (например: 15, 15/2).")
+
+    return errors
+
 @app.route('/api/checkout', methods=['POST'])
 @login_required
 def api_checkout():
@@ -255,13 +277,20 @@ def api_checkout():
     house = data.get('house', '').strip()
     apartment = data.get('apartment', '').strip()
 
+    # Валидация карты
     if len(card) != 16:
         return jsonify({'status': 'error', 'message': 'Неверный номер карты (должно быть 16 цифр).'})
     if len(cvv) != 3 or not cvv.isdigit():
         return jsonify({'status': 'error', 'message': 'Неверный CVV (3 цифры).'})
-    if not name or not city or not street or not house:
-        return jsonify({'status': 'error', 'message': 'Укажите имя, город, улицу и дом.'})
+    if not name:
+        return jsonify({'status': 'error', 'message': 'Укажите имя на карте.'})
 
+    # Валидация адреса
+    address_errors = validate_address(city, street, house, apartment)
+    if address_errors:
+        return jsonify({'status': 'error', 'message': ' '.join(address_errors)})
+
+    # Сохранение заказа
     CartItem.query.filter_by(user_id=current_user.id).delete()
     db.session.commit()
     return jsonify({'status': 'ok'})
