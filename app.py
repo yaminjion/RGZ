@@ -243,6 +243,26 @@ def api_logout():
     logout_user()
     return jsonify({'status': 'ok'})
 
+@app.route('/api/auth/delete_account', methods=['POST'])
+@login_required
+def api_delete_account():
+    try:
+        user_id = current_user.id
+
+        # Удаляем товары из корзины
+        CartItem.query.filter_by(user_id=user_id).delete()
+
+        # Удаляем пользователя
+        User.query.filter_by(id=user_id).delete()
+
+        db.session.commit()
+        logout_user()
+
+        return jsonify({'status': 'ok'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'status': 'error', 'message': 'Ошибка удаления аккаунта.'})
+    
 # Валидация адреса
 def validate_address(city, street, house, apartment):
     errors = []

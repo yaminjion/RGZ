@@ -16,12 +16,23 @@
 
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; flex: 2; min-width: 300px;">
             {% if current_user.is_authenticated %}
-                <span style="color: #004488; font-weight: 600;">Привет, {{ current_user.login }}! ❤ (ɔˆз(ˆ⌣ˆc) </span>
+                <span style="color: #004488; font-weight: 600;">Привет, {{ current_user.login }}! ❤ (ɔˆз(ˆ⌣ˆc)</span>
                 <a href="{{ url_for('cart') }}" style="color: #0066cc; text-decoration: none; font-weight: 600;">Корзина</a> |
                 <a href="#" onclick="logout(); return false;" style="color: #0066cc; text-decoration: none; font-weight: 600;">Выйти</a> |
                 <a href="#" onclick="{
-                    fetch('/api/auth/logout', {method:'POST'}).then(()=>window.location.href='/');
-                } return false;" style="color: #0066cc; text-decoration: none; font-weight: 600;">Удалить аккаунт</a>
+                    fetch('/api/auth/delete_account', {method:'POST'})
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'ok') {
+                            window.location.href = '/';
+                        } else {
+                            alert('Ошибка удаления аккаунта. (>_<)');
+                        }
+                    });
+                    return false;
+                }" style="color: #0066cc; text-decoration: underline; cursor: pointer; font-weight: 600;">
+                    Удалить аккаунт
+                </a>
             {% else %}
                 <a href="{{ url_for('login') }}" style="color: #0066cc; text-decoration: none; font-weight: 600;">Вход</a> |
                 <a href="{{ url_for('register') }}" style="color: #0066cc; text-decoration: none; font-weight: 600;">Регистрация</a>

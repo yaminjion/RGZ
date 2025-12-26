@@ -2,12 +2,24 @@
 {% block lab %}Регистрация{% endblock %}
 {% block content %}
 <h2 style="text-align: center;">Регистрация</h2>
+
+<!-- Уведомления об ошибках -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash" style="max-width: 400px; margin: 0 auto 20px;">
+            {% for msg in messages %}
+                {{ msg|replace('(<', '(><')|replace('>_<_)', '>_<)') }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
 <form id="register-form" style="max-width: 400px; margin: 0 auto;">
     <label>Логин (латиница, цифры, _-):<br>
-        <input type="text" id="reg-login" required style="width: 100%; padding: 10px; margin: 8px 0;">
+        <input type="text" id="reg-login" name="login" required style="width: 100%; padding: 10px; margin: 8px 0;">
     </label><br>
     <label>Пароль:<br>
-        <input type="password" id="reg-password" required style="width: 100%; padding: 10px; margin: 8px 0;">
+        <input type="password" id="reg-password" name="password" required style="width: 100%; padding: 10px; margin: 8px 0;">
     </label><br>
     <button type="submit" style="width: 100%;">Зарегистрироваться</button>
 </form>

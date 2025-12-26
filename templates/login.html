@@ -2,12 +2,24 @@
 {% block lab %}Вход{% endblock %}
 {% block content %}
 <h2 style="text-align: center;">Вход в аккаунт</h2>
+
+<!-- Стилизованные уведомления -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash" style="max-width: 400px; margin: 0 auto 20px;">
+            {% for msg in messages %}
+                {{ msg|replace('(<', '(><')|replace('>_<_)', '>_<)') }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
 <form id="login-form" style="max-width: 400px; margin: 0 auto;">
     <label>Логин:<br>
-        <input type="text" id="login-input" required style="width: 100%; padding: 10px; margin: 8px 0;">
+        <input type="text" id="login-input" name="login" required style="width: 100%; padding: 10px; margin: 8px 0;">
     </label><br>
     <label>Пароль:<br>
-        <input type="password" id="password-input" required style="width: 100%; padding: 10px; margin: 8px 0;">
+        <input type="password" id="password-input" name="password" required style="width: 100%; padding: 10px; margin: 8px 0;">
     </label><br>
     <button type="submit" style="width: 100%;">Войти</button>
 </form>
