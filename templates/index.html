@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block lab %}Онлайн-магазин мебели{% endblock %}
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 20px;">Каталог мебели</h2>
+<div class="product-grid" id="product-list">
+    <div class="product-card">
+        <img src="/static/${p.image_filename}" class="product-image" alt="${p.name}">
+        <div class="product-card-content">
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">${p.price.toFixed(2)} ₽</div>
+            ${window.isLoggedIn ? (
+                cartIds.has(p.id)
+                    ? `<div style="color:#004688;font-weight:bold;margin:6px 0;">в корзине</div>
+                    <div class="qty-container">
+                        <button class="qty-btn" onclick="changeQty(${p.id}, -1)">–</button>
+                        <span style="font-weight: bold;">${cartIds.get(p.id)}</span>
+                        <button class="qty-btn" onclick="changeQty(${p.id}, 1)">+</button>
+                    </div>`
+                    : `<button onclick="addToCart(${p.id})">в корзину</button>`
+            ) : ''}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+{% endblock %}

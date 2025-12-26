@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block lab %}Оформление заказа{% endblock %}
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 20px;">
+    <img src="/static/гиф.gif" alt="Глаза хлопают" style="width: 300px; height: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+    Оформление заказа
+</h2>
+
+<form id="checkout-form" style="max-width: 600px; margin: 0 auto;">
+    <label>Имя на карте:<br>
+        <input type="text" name="name" required style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br>
+
+    <label>Номер карты (16 цифр):<br>
+        <input type="text" name="card" placeholder="0000 0000 0000 0000" 
+               oninput="this.value = this.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim()"
+               required style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br>
+
+    <label>CVV (3 цифры):<br>
+        <input type="text" name="cvv" maxlength="3" required style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br>
+
+    <h3 style="margin: 20px 0 10px;">Адрес доставки</h3>
+    <label>Город:<br>
+        <input type="text" name="city" required style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br>
+
+    <label>Улица:<br>
+        <input type="text" name="street" required style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br>
+
+    <label>Дом:<br>
+        <input type="text" name="house" required style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br>
+
+    <label>Квартира (необязательно):<br>
+        <input type="text" name="apartment" style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br><br>
+
+    <div id="checkout-result" style="display: none; margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(200, 230, 255, 0.4); border-radius: 12px; text-align: center; font-weight: 600; color: #0066cc;"></div>
+    <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Оплатить заказ</button>
+</form>
+<p style="text-align: center; margin-top: 20px;">
+    <a href="{{ url_for('cart') }}" class="back-to-cart">← Назад в корзину</a>
+</p>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+{% endblock %}

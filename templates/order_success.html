@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block lab %}Заказ оформлен{% endblock %}
+{% block lab_title %}Спасибо за заказ!(◕‿◕)♡ {% endblock %}
+{% block content %}
+<div style="text-align: center; background: #e6fff6; padding: 30px; border-radius: 12px;">
+    <h2>Заказ успешно оформлен! ♡( ◡‿◡ ) </h2>
+    <p><strong>Сумма:</strong> {{ total }} ₽</p>
+    <p><strong>Адрес доставки:</strong><br><em>{{ address }}</em></p>
+    <p>В ближайшее время вы получите уведомление.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block lab %}Корзина{% endblock %}
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 20px;">Ваша корзина (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ </h2>
+
+<div class="cart-container">
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Кол-во</th>
+                <th>Итого</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="cart-items">
+            <tr><td colspan="5" style="text-align: center;">Загрузка... (◕‿◕)</td></tr>
+        </tbody>
+    </table>
+
+    <div style="text-align: right; margin-top: 20px; font-size: 1.2em; font-weight: 600; color: #0066cc;">
+        Итого: <span id="total">0.00</span> ₽
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('checkout') }}" id="checkout-btn" class="checkout-btn" style="display: none;">Оформить заказ</a>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+{% endblock %}

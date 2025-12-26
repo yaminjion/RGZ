@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block lab %}Товар — {{ product.name }}{% endblock %}
+{% block lab_title %}{{ product.name }}{% endblock %}
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.85); padding: 20px; border-radius: 14px; box-shadow: 0 6px 16px rgba(100,180,255,0.3);">
+    <img src="{{ url_for('static', filename=product.image_filename) }}" alt="{{ product.name }}" style="width:100%; border-radius:10px; margin-bottom:15px;">
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.description }}</p>
+    <p><strong>Цена:</strong> {{ "%.2f"|format(product.price) }} ₽</p>
+    {% if current_user.is_authenticated %}
+        <form method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+            <button type="submit">Добавить в корзину</button>
+        </form>
+    {% else %}
+        <p>Только авторизованные пользователи могут добавлять товары.</p>
+    {% endif %}
+</div>
+{% endblock %}

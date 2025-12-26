@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Елена Минько. {% block lab %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 20px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(200, 230, 255, 0.5); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div style="text-align: center; flex: 1; min-width: 200px;">
+            <h1 style="margin: 0; color: #004488; font-weight: 600; font-size: 1.2em;">Argentum Home</h1>
+            <p style="margin: 6px 0 0; color: #0066cc; font-size: 1.05em;">Серебряный уют будущего</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; flex: 2; min-width: 300px;">
+            {% if current_user.is_authenticated %}
+                <span style="color: #004488; font-weight: 600;">Привет, {{ current_user.login }}! ❤ (ɔˆз(ˆ⌣ˆc) </span>
+                <a href="{{ url_for('cart') }}" style="color: #0066cc; text-decoration: none; font-weight: 600;">Корзина</a> |
+                <a href="#" onclick="logout(); return false;" style="color: #0066cc; text-decoration: none; font-weight: 600;">Выйти</a> |
+                <a href="#" onclick="{
+                    fetch('/api/auth/logout', {method:'POST'}).then(()=>window.location.href='/');
+                } return false;" style="color: #0066cc; text-decoration: none; font-weight: 600;">Удалить аккаунт</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" style="color: #0066cc; text-decoration: none; font-weight: 600;">Вход</a> |
+                <a href="{{ url_for('register') }}" style="color: #0066cc; text-decoration: none; font-weight: 600;">Регистрация</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main style="padding: 120px 20px 80px; max-width: 1200px; margin: 0 auto; width: 100%;">
+        {% block content %}{% endblock %}
+        
+        {% if request.endpoint != 'index' %}
+            <p style="text-align: center; margin-top: 20px;">
+                <a href="/" class="back-to-home">← На главную</a>
+            </p>
+        {% endif %}
+    </main>
+
+    <footer style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; padding: 12px; text-align: center; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-top: 1px solid rgba(200, 230, 255, 0.5);">
+        &copy; Елена Минько, ФБИ-34, 3 курс, 2025
+    </footer>
+
+    {% block script %}{% endblock %}
+</body>
+</html>

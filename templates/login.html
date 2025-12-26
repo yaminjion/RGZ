@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block lab %}Вход{% endblock %}
+{% block content %}
+<h2 style="text-align: center;">Вход в аккаунт</h2>
+<form id="login-form" style="max-width: 400px; margin: 0 auto;">
+    <label>Логин:<br>
+        <input type="text" id="login-input" required style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br>
+    <label>Пароль:<br>
+        <input type="password" id="password-input" required style="width: 100%; padding: 10px; margin: 8px 0;">
+    </label><br>
+    <button type="submit" style="width: 100%;">Войти</button>
+</form>
+<p style="text-align: center; margin-top: 20px;">
+    Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрироваться</a>
+</p>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+{% endblock %}
